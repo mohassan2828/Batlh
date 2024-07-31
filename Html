@@ -1,0 +1,486 @@
+Html
+-----------
+
+
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>بطلها</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1 class="app-title">بطلها <span class="icon">🚭</span></h1>
+            <p class="advice">مظهرك جميل … لكنه أجمل بلا تدخين</p>
+        </header>
+        <nav class="navigation">
+            <button class="nav-button" onclick="openSettings()">الإعدادات</button>
+            <button class="nav-button" onclick="openProgress()">مستوى تقدمك</button>
+            <button class="nav-button" onclick="openHealthTracking()">تابع تطورك الصحي</button>
+        </nav>
+    </div>
+
+    <div class="settings hidden">
+        <h2>الإعدادات</h2>
+        <form id="settings-form">
+            <label for="quit-date">تاريخ الإقلاع:</label>
+            <input type="date" id="quit-date" name="quit-date" required>
+            <label for="quit-time">وقت الإقلاع:</label>
+            <input type="time" id="quit-time" name="quit-time" required>
+            <button type="button" onclick="nextStep('cigarettes')">التالي</button>
+        </form>
+    </div>
+
+    <div class="cigarettes hidden">
+        <h2>كم عدد السجائر التي تدخنها في اليوم؟</h2>
+        <form id="cigarettes-form">
+            <input type="number" id="cigarettes-per-day" name="cigarettes-per-day" required>
+            <button type="button" onclick="nextStep('price')">التالي</button>
+        </form>
+    </div>
+
+    <div class="price hidden">
+        <h2>ما هو سعر علبة السجائر؟</h2>
+        <form id="price-form">
+            <input type="number" id="price-per-pack" name="price-per-pack" required>
+            <select id="currency" name="currency" required>
+                <option value="">اختر العملة</option>
+                <option value="USD">دولار أمريكي</option>
+                <option value="EGP">جنيه مصري</option>
+                <option value="AED">درهم إماراتي</option>
+                <option value="KWD">دينار كويتي</option>
+                <option value="SAR">ريال سعودي</option>
+            </select>
+            <button type="button" onclick="saveSettings()">حفظ</button>
+        </form>
+    </div>
+
+    <div class="progress hidden">
+        <h2>مستوى تقدمك</h2>
+        <div class="stats">
+            <div class="stat-item">
+                <span class="icon">💰</span>
+                <p>الفلوس التي وفرتها: <span id="money-saved">0</span></p>
+            </div>
+            <div class="stat-item">
+                <span class="icon">🚬</span>
+                <p>عدد السجائر التي أقلعت عنها: <span id="cigarettes-avoided">0</span></p>
+            </div>
+            <div class="stat-item time-stat">
+                <span class="icon">⏳</span>
+                <div id="time-quit">
+                    <div class="time-unit">
+                        <span class="label">سنين:</span>
+                        <span id="years-quit">0</span>
+                    </div>
+                    <div class="time-unit">
+                        <span class="label">شهور:</span>
+                        <span id="months-quit">0</span>
+                    </div>
+                    <div class="time-unit">
+                        <span class="label">أيام:</span>
+                        <span id="days-quit">0</span>
+                    </div>
+                    <div class="time-unit">
+                        <span class="label">ساعات:</span>
+                        <span id="hours-quit">0</span>
+                    </div>
+                    <div class="time-unit">
+                        <span class="label">دقائق:</span>
+                        <span id="minutes-quit">0</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <button onclick="goBack()">رجوع</button>
+    </div>
+
+    <div class="health-tracking hidden">
+        <h2>تابع تطورك الصحي</h2>
+        <div id="health-info" class="health-info">
+            <!-- سيتم ملء هذه المعلومات عبر JavaScript -->
+        </div>
+        <button onclick="goBack()">رجوع</button>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
+
+
+Css
+------
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f0f8ff;
+}
+
+.container {
+    text-align: center;
+    padding: 20px;
+}
+
+.header {
+    background-color: #e0f7fa;
+    padding: 20px;
+    border-bottom: 2px solid #0097a7;
+}
+
+.app-title {
+    margin: 0;
+    font-size: 24px;
+    color: #00796b;
+}
+
+.advice {
+    font-size: 18px;
+    color: #004d40;
+}
+
+.navigation {
+    margin-top: 20px;
+}
+
+.nav-button {
+    background-color: #00796b;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    margin: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.nav-button:hover {
+    background-color: #004d40;
+}
+
+.hidden {
+    display: none;
+}
+
+.settings, .cigarettes, .price, .progress, .health-tracking {
+    padding: 20px;
+    margin: 20px auto;
+    border-radius: 10px;
+    background-color: #ffffff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 80%;
+    max-width: 600px;
+    text-align: center;
+}
+
+input[type="date"], input[type="time"], input[type="number"], select {
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 5px;
+    border: 1px solid #00796b;
+    width: calc(100% - 22px);
+}
+
+button {
+    background-color: #00796b;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+button:hover {
+    background-color: #004d40;
+}
+
+.stats {
+    margin-top: 20px;
+}
+
+.stat-item {
+    margin: 10px 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+}
+
+.stat-item .icon {
+    margin-right: 10px;
+    font-size: 24px;
+}
+
+.time-stat {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 18px;
+}
+
+.time-unit {
+    display: flex;
+    align-items: center;
+    margin: 5px 0;
+}
+
+.time-unit .label {
+    font-weight: bold;
+    margin-right: 5px;
+}
+
+.health-info {
+    background-color: #ffffff;
+    border-radius: 10px;
+    padding: 20px;
+    margin: 10px auto;
+    width: 100%;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    text-align: left;
+    font-size: 18px;
+}
+
+.health-info h3 {
+    margin-top: 0;
+    font-size: 22px;
+}
+
+.health-item {
+    background-color: #e0f7fa;
+    border: 2px solid #0097a7;
+    border-radius: 10px;
+    margin: 10px 0;
+    padding: 10px;
+    text-align: center;
+}
+
+.health-item:nth-child(odd) {
+    background-color: #fce4ec;
+    border-color: #ec407a;
+}
+
+.health-item:nth-child(even) {
+    background-color: #e8f5e9;
+    border-color: #66bb6a;
+}
+
+.health-item .health-title {
+    font-size: 20px;
+    font-weight: bold;
+    color: #00796b;
+}
+
+.health-item:nth-child(odd) .health-title {
+    color: #ec407a;
+}
+
+.health-item:nth-child(even) .health-title {
+    color: #66bb6a;
+}
+
+.progress-bar {
+    width: 100%;
+    background-color: #dcdcdc;
+    border-radius: 10px;
+    margin: 20px 0;
+}
+
+.progress-bar-fill {
+    height: 20px;
+    background-color: #00796b;
+    border-radius: 10px;
+    text-align: center;
+    line-height: 20px;
+    color: white;
+    font-weight: bold;
+}
+
+.health-item:nth-child(odd) .progress-bar-fill {
+    background-color: #ec407a;
+}
+
+.health-item:nth-child(even) .progress-bar-fill {
+    background-color: #66bb6a;
+}
+
+
+
+--------
+Java
+_______
+
+
+document.addEventListener('DOMContentLoaded', () => {
+    if (localStorage.getItem('quitDate')) {
+        document.getElementById('quit-date').value = localStorage.getItem('quitDate');
+    }
+    if (localStorage.getItem('quitTime')) {
+        document.getElementById('quit-time').value = localStorage.getItem('quitTime');
+    }
+    if (localStorage.getItem('cigarettesPerDay')) {
+        document.getElementById('cigarettes-per-day').value = localStorage.getItem('cigarettesPerDay');
+    }
+    if (localStorage.getItem('pricePerPack')) {
+        document.getElementById('price-per-pack').value = localStorage.getItem('pricePerPack');
+    }
+    if (localStorage.getItem('currency')) {
+        document.getElementById('currency').value = localStorage.getItem('currency');
+    }
+});
+
+function openSettings() {
+    document.querySelector('.container').classList.add('hidden');
+    document.querySelector('.settings').classList.remove('hidden');
+}
+
+function openProgress() {
+    updateProgress();
+    document.querySelector('.container').classList.add('hidden');
+    document.querySelector('.progress').classList.remove('hidden');
+}
+
+function openHealthTracking() {
+    updateHealthTracking();
+    document.querySelector('.container').classList.add('hidden');
+    document.querySelector('.health-tracking').classList.remove('hidden');
+}
+
+function nextStep(step) {
+    const quitDate = document.getElementById('quit-date').value;
+    const quitTime = document.getElementById('quit-time').value;
+    const cigarettesPerDay = document.getElementById('cigarettes-per-day')?.value;
+    const pricePerPack = document.getElementById('price-per-pack')?.value;
+    const currency = document.getElementById('currency')?.value;
+
+    if (step === 'cigarettes') {
+        if (!quitDate || !quitTime) {
+            alert('يرجى إدخال تاريخ ووقت الإقلاع.');
+            return;
+        }
+        document.querySelector('.settings').classList.add('hidden');
+        document.querySelector('.cigarettes').classList.remove('hidden');
+    } else if (step === 'price') {
+        if (isNaN(cigarettesPerDay)) {
+            alert('يرجى إدخال عدد السجائر التي تدخنها في اليوم.');
+            return;
+        }
+        document.querySelector('.cigarettes').classList.add('hidden');
+        document.querySelector('.price').classList.remove('hidden');
+    }
+}
+
+function saveSettings() {
+    const quitDate = document.getElementById('quit-date').value;
+    const quitTime = document.getElementById('quit-time').value;
+    const cigarettesPerDay = document.getElementById('cigarettes-per-day')?.value;
+    const pricePerPack = document.getElementById('price-per-pack')?.value;
+    const currency = document.getElementById('currency')?.value;
+
+    if (!quitDate || !quitTime || isNaN(cigarettesPerDay) || !pricePerPack || !currency) {
+        alert('يرجى ملء جميع الحقول.');
+        return;
+    }
+
+    localStorage.setItem('quitDate', quitDate);
+    localStorage.setItem('quitTime', quitTime);
+    localStorage.setItem('cigarettesPerDay', cigarettesPerDay);
+    localStorage.setItem('pricePerPack', pricePerPack);
+    localStorage.setItem('currency', currency);
+
+    alert('تم حفظ الإعدادات بنجاح.');
+    document.querySelector('.price').classList.add('hidden');
+    document.querySelector('.container').classList.remove('hidden');
+}
+
+function updateProgress() {
+    const quitDate = new Date(localStorage.getItem('quitDate') + 'T' + localStorage.getItem('quitTime'));
+    const now = new Date();
+    const diff = now - quitDate;
+
+    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+
+    const cigarettesPerDay = parseFloat(localStorage.getItem('cigarettesPerDay'));
+    const pricePerPack = parseFloat(localStorage.getItem('pricePerPack'));
+
+    const moneySaved = (days * cigarettesPerDay * pricePerPack / 20).toFixed(2);
+    const cigarettesAvoided = (days * cigarettesPerDay).toFixed(0);
+
+    document.getElementById('money-saved').innerText = moneySaved;
+    document.getElementById('cigarettes-avoided').innerText = cigarettesAvoided;
+
+    const years = Math.floor(days / 365);
+    const months = Math.floor((days % 365) / 30);
+    const daysRemaining = days % 30;
+    const hoursRemaining = hours;
+    const minutesRemaining = minutes;
+
+    document.getElementById('years-quit').innerText = years;
+    document.getElementById('months-quit').innerText = months;
+    document.getElementById('days-quit').innerText = daysRemaining;
+    document.getElementById('hours-quit').innerText = hoursRemaining;
+    document.getElementById('minutes-quit').innerText = minutesRemaining;
+}
+
+function updateHealthTracking() {
+    const quitDate = new Date(localStorage.getItem('quitDate') + 'T' + localStorage.getItem('quitTime'));
+    const now = new Date();
+    const diff = now - quitDate;
+
+    const minutes = Math.floor(diff / (1000 * 60));
+    const hours = Math.floor(diff / (1000 * 60 * 60));
+    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+
+    const healthMilestones = [
+        { time: 20, unit: 'minutes', title: 'خلال أول 20 دقيقة:', description: 'يبدأ ضغط الدم ومعدل ضربات القلب في الانخفاض.' },
+        { time: 8, unit: 'hours', title: 'خلال 8 ساعات:', description: 'ينخفض مستوى أول أكسيد الكربون في الدم ويبدأ مستوى الأكسجين في الارتفاع.' },
+        { time: 24, unit: 'hours', title: 'بعد 24 ساعة:', description: 'تبدأ الرئتين في تنظيف نفسها من السموم.' },
+        { time: 48, unit: 'hours', title: 'بعد 48 ساعة:', description: 'تبدأ أعصاب الذوق والرائحة في التعافي.' },
+        { time: 72, unit: 'hours', title: 'بعد 72 ساعة:', description: 'يبدأ التنفس في التحسن.' },
+        { time: 14, unit: 'days', title: 'بعد أسبوعين إلى 3 أشهر:', description: 'تتحسن الدورة الدموية وتزيد قدرة الرئتين.' },
+        { time: 30, unit: 'days', title: 'بعد 1-9 أشهر:', description: 'تتحسن وظائف الرئة والسعال يقل.' },
+        { time: 365, unit: 'days', title: 'بعد سنة:', description: 'خطر الإصابة بأمراض القلب ينخفض بنسبة 50%.' },
+        { time: 5 * 365, unit: 'days', title: 'بعد 5 سنوات:', description: 'خطر الإصابة بالسكتة الدماغية ينخفض إلى نصف خطر المدخن.' },
+        { time: 10 * 365, unit: 'days', title: 'بعد 10 سنوات:', description: 'خطر الإصابة بسرطان الرئة ينخفض إلى نصف خطر المدخن.' },
+        { time: 15 * 365, unit: 'days', title: 'بعد 15 سنة:', description: 'خطر الإصابة بأمراض القلب يعادل غير المدخن.' },
+    ];
+
+    let healthInfo = `
+        <h3>تطور صحتك منذ الإقلاع:</h3>
+        <div class="health-info">
+    `;
+
+    healthMilestones.forEach((milestone, index) => {
+        const timeElapsed = milestone.unit === 'minutes' ? minutes : (milestone.unit === 'hours' ? hours : days);
+        const percentage = Math.min((timeElapsed / milestone.time) * 100, 100).toFixed(2);
+
+        healthInfo += `
+            <div class="health-item">
+                <div class="health-title">${milestone.title}</div>
+                <div class="health-description">${milestone.description}</div>
+                <div class="progress-bar">
+                    <div class="progress-bar-fill" style="width: ${percentage}%">${percentage}%</div>
+                </div>
+            </div>
+        `;
+    });
+
+    healthInfo += '</div>';
+
+    document.getElementById('health-info').innerHTML = healthInfo;
+}
+
+function goBack() {
+    document.querySelector('.settings').classList.add('hidden');
+    document.querySelector('.cigarettes').classList.add('hidden');
+    document.querySelector('.price').classList.add('hidden');
+    document.querySelector('.progress').classList.add('hidden');
+    document.querySelector('.health-tracking').classList.add('hidden');
+    document.querySelector('.container').classList.remove('hidden');
+}
